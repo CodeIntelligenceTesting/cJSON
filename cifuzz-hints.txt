@@ -1,0 +1,24 @@
+When using the `cJSON_ReplaceItemInObject` function the return value has to be
+checked to know if the insertion was successfull. In an error case the object to
+insert needs to be deleted manually. E.g.
+```
+if (!cJSON_ReplaceItemInObject(json, key.c_str(), itemToInsert)) {
+  cJSON_Delete(itemToInsert);
+}
+```
+
+Make sure that the `FuzzedDataProvider::ConsumeIntegralInRange(min, max)`
+function is never called with a `max` parameter that is smaller then `min`.
+
+The function `cJSON_AddItemToArray` transfers the ownership of the inserted
+item to the array. The inserted item does not need to be manually deleted. The
+inserted item is not allowed to be used after it has been removed from the
+array with `cJSON_DeleteItemFromArray`.
+
+The `cJSON_ParseWithLength` function needs to be called with a buffer and its
+corresponding size. If there is a `FuzzedDataProvider` allocated string then
+the string size should be used and not the fuzzer input size.
+
+Don't delete individual items that are extracted from a JSON array with the
+function `cJSON_GetArrayItem`. Instead delete the entire json array or json
+object containing the array.
