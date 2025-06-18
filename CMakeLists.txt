@@ -284,3 +284,4 @@ add_subdirectory(fuzzing)
 add_fuzz_test(fuzz fuzz.cpp)
 target_link_libraries(fuzz PRIVATE ${CJSON_LIB})
 
+add_subdirectory(cifuzz-spark)
